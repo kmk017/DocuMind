@@ -1,0 +1,194 @@
+.ambient {
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  /* Prevent the background from creating an accidental scroll area. */
+  contain: paint;
+}
+
+/* =========================================
+   SUBTLE BACKGROUND GRID
+   ========================================= */
+
+.ambient__grid {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    radial-gradient(
+      var(--color-border) 0.8px,
+      transparent 0.8px
+    );
+
+  background-size: 28px 28px;
+
+  opacity: 0.3;
+
+  mask-image:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      black 35%,
+      transparent 100%
+    );
+
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      black 35%,
+      transparent 100%
+    );
+}
+
+/* =========================================
+   AMBIENT LIGHT SHAPES
+   ========================================= */
+
+.ambient__shape {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(75px);
+
+  will-change: transform;
+
+  transform: translateZ(0);
+}
+
+/* Top-left */
+
+.ambient__shape--a {
+  top: -12%;
+  left: 6%;
+
+  width: 480px;
+  height: 480px;
+
+  background: var(--color-accent-light);
+
+  opacity: 0.82;
+
+  animation:
+    ambient-drift-a 42s ease-in-out infinite alternate;
+}
+
+/* Right side */
+
+.ambient__shape--b {
+  top: 18%;
+  right: -8%;
+
+  width: 420px;
+  height: 420px;
+
+  background: #eef0f3;
+
+  opacity: 0.72;
+
+  animation:
+    ambient-drift-b 50s ease-in-out infinite alternate;
+}
+
+/* Bottom */
+
+.ambient__shape--c {
+  bottom: -14%;
+  left: 32%;
+
+  width: 520px;
+  height: 520px;
+
+  background: #f1eee6;
+
+  opacity: 0.55;
+
+  animation:
+    ambient-drift-c 60s ease-in-out infinite alternate;
+}
+
+/* =========================================
+   MOTION
+   ========================================= */
+
+@keyframes ambient-drift-a {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(40px, 30px, 0) scale(1.08);
+  }
+}
+
+@keyframes ambient-drift-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(-35px, 25px, 0) scale(1.06);
+  }
+}
+
+@keyframes ambient-drift-c {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(20px, -30px, 0) scale(1.1);
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+  .ambient__shape {
+    filter: blur(65px);
+  }
+
+  .ambient__shape--a {
+    width: 360px;
+    height: 360px;
+
+    left: -12%;
+  }
+
+  .ambient__shape--b {
+    width: 320px;
+    height: 320px;
+
+    right: -18%;
+  }
+
+  .ambient__shape--c {
+    width: 380px;
+    height: 380px;
+
+    left: 25%;
+  }
+
+  .ambient__grid {
+    background-size: 24px 24px;
+    opacity: 0.24;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient__shape {
+    animation: none;
+    will-change: auto;
+  }
+}
