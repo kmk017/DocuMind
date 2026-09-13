@@ -1,131 +1,114 @@
 """
-Local physical file storage helper for DocuMind documents.
+Supabase Storage helper for DocuMind documents.
 
-Responsibilities (and ONLY these):
-    - Determine the storage root directory
-    - Ensure the storage directory exists
+Responsibilities:
     - Generate unique stored filenames
-    - Resolve stored filenames to safe physical paths
-    - Save files to disk
-    - Delete files from disk
+    - Upload documents to Supabase Storage
+    - Download documents temporarily for processing
+    - Delete documents from Supabase Storage
 
-This module intentionally does NOT:
-    - Import or touch the Document SQLAlchemy model
-    - Access the database in any way
-    - Handle Flask requests or build API responses
-    - Validate file size, extension, or MIME type (business validation
-      belongs to the future Upload API)
+This module does NOT:
+    - Access the Document SQLAlchemy model
+    - Handle Flask requests
+    - Perform PDF/DOCX extraction
+    - Perform AI/LLM processing
 """
 
+import os
+import tempfile
 import uuid
 from pathlib import Path
 
-# The storage root is calculated relative to this file's location, not the
-# current working directory. This file lives at:
-#   backend/app/file_storage/document_storage.py
-# so walking up three parents lands on `backend/`, and appending
-# `storage/documents` gives the final target regardless of where the
-# application process was launched from.
-_BACKEND_ROOT = Path(__file__).resolve().parents[2]
-STORAGE_ROOT = _BACKEND_ROOT / "storage" / "documents"
+from ..supabase_client import supabase
 
 
-def ensure_storage_directory() -> Path:
-    """Create the document storage directory if it doesn't already exist.
-
-    Safe to call repeatedly (idempotent). Returns the storage root path.
-    """
-    STORAGE_ROOT.mkdir(parents=True, exist_ok=True)
-    return STORAGE_ROOT
+BUCKET_NAME = os.getenv(
+    "SUPABASE_STORAGE_BUCKET",
+    "documents",
+)
 
 
 def generate_stored_filename(original_filename: str) -> str:
-    """Generate a unique, safe filename for physical storage.
+    """Generate a unique filename while preserving the extension."""
 
-    Takes only the extension from the original filename; the rest of the
-    original name is discarded and never used on disk. The original
-    filename should be persisted separately as metadata (in the database),
-    not derived from the stored filename.
+    extension = Path(original_filename).suffix.lower()
 
-    Example:
-        "resume.pdf" -> "550e8400-e29b-41d4-a716-446655440000.pdf"
-    """
-    extension = Path(original_filename).suffix  # includes the leading dot, e.g. ".pdf"
     return f"{uuid.uuid4()}{extension}"
 
 
-def resolve_path(stored_filename: str) -> Path:
-    """Resolve a stored filename to its full physical path, guaranteeing
-    the result stays inside the storage root.
-
-    Raises:
-        ValueError: if the resolved path would escape the storage root
-            (e.g. a stored_filename containing path-traversal segments).
+def save_file(file_obj, stored_filename: str) -> int:
     """
-    ensure_storage_directory()
-
-    candidate = (STORAGE_ROOT / stored_filename).resolve()
-    storage_root_resolved = STORAGE_ROOT.resolve()
-
-    if not candidate.is_relative_to(storage_root_resolved):
-        raise ValueError(
-            "Resolved path escapes the storage directory; refusing to proceed."
-        )
-
-    return candidate
-
-
-def save_file(file_obj, stored_filename: str) -> Path:
-    """Save a file-like object to disk under the given stored filename.
-
-    Args:
-        file_obj: a file-like object supporting .save(path) (e.g. Werkzeug's
-            FileStorage) OR a plain binary file object supporting .read().
-        stored_filename: the UUID-based filename to save under (see
-            generate_stored_filename).
+    Upload a file to Supabase Storage.
 
     Returns:
-        The full physical Path the file was saved to.
-
-    Raises:
-        ValueError: if the target path would escape the storage root, or
-            if a file already exists at that path (refuses to overwrite).
+        Uploaded file size in bytes.
     """
-    target_path = resolve_path(stored_filename)
 
-    if target_path.exists():
-        raise ValueError(
-            f"Refusing to overwrite existing file: {target_path.name}"
-        )
+    if not stored_filename:
+        raise ValueError("Stored filename is required.")
 
-    if hasattr(file_obj, "save"):
-        # Werkzeug FileStorage-style object (what Flask will hand us later).
-        file_obj.save(str(target_path))
+    if hasattr(file_obj, "read"):
+        file_obj.seek(0)
+        file_data = file_obj.read()
     else:
-        # Generic binary file-like object.
-        with open(target_path, "wb") as f:
-            f.write(file_obj.read())
+        raise ValueError("File object must support read().")
 
-    return target_path
+    if not file_data:
+        raise ValueError("Cannot upload an empty file.")
+
+    supabase.storage.from_(BUCKET_NAME).upload(
+        path=stored_filename,
+        file=file_data,
+        file_options={
+            "upsert": "false",
+        },
+    )
+
+    return len(file_data)
+
+
+def download_file(stored_filename: str) -> Path:
+    """
+    Download a document from Supabase Storage into a temporary file.
+
+    The returned file is intended only for document processing.
+    """
+
+    if not stored_filename:
+        raise ValueError("Stored filename is required.")
+
+    file_data = supabase.storage.from_(BUCKET_NAME).download(
+        stored_filename
+    )
+
+    suffix = Path(stored_filename).suffix
+
+    temporary_file = tempfile.NamedTemporaryFile(
+        delete=False,
+        suffix=suffix,
+    )
+
+    try:
+        temporary_file.write(file_data)
+        temporary_file.flush()
+        return Path(temporary_file.name)
+    finally:
+        temporary_file.close()
 
 
 def delete_file(stored_filename: str) -> bool:
-    """Delete a stored document file.
+    """
+    Delete a document from Supabase Storage.
 
     Returns:
-        True if a file was deleted, False if there was nothing to delete
-        (already missing/deleted) — this is treated as a success case, not
-        an error.
-
-    Raises:
-        ValueError: if the resolved path would escape the storage root.
-        OSError: if a real filesystem failure occurs (e.g. permissions);
-            this is intentionally allowed to propagate to the caller.
+        True when the delete request succeeds.
     """
-    target_path = resolve_path(stored_filename)
 
-    if not target_path.exists():
+    if not stored_filename:
         return False
 
-    target_path.unlink()
+    supabase.storage.from_(BUCKET_NAME).remove(
+        [stored_filename]
+    )
+
     return True

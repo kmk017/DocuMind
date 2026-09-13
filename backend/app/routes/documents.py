@@ -55,25 +55,22 @@ def upload_document():
     stored_filename = storage.generate_stored_filename(
         original_filename
     )
-
-    # ---- 3. Save physical file ----
-
+    
     try:
-        saved_path = storage.save_file(
+        file_size = storage.save_file(
             uploaded_file,
             stored_filename,
         )
+    
     except Exception:
         current_app.logger.exception(
-            "Failed to save uploaded file to disk."
+            "Failed to save uploaded file to Supabase Storage."
         )
-
+    
         return _error(
             "Could not save the file. Please try again.",
             500,
         )
-
-    file_size = saved_path.stat().st_size
 
     # ---- 4. Create database record ----
 
@@ -84,7 +81,7 @@ def upload_document():
             stored_filename=stored_filename,
             file_type=extension.lstrip("."),
             file_size=file_size,
-            storage_path=str(saved_path),
+            storage_path=stored_filename,
         )
 
         db.session.add(document)
@@ -97,7 +94,7 @@ def upload_document():
             storage.delete_file(stored_filename)
         except Exception:
             current_app.logger.exception(
-                "Failed to clean up orphaned file "
+                "Failed to clean up orphaned Supabase Storage object "
                 "after database error."
             )
 
@@ -298,7 +295,7 @@ def delete_document(document_id):
         if not file_was_deleted:
 
             current_app.logger.warning(
-                "Physical file already missing "
+                "Supabase Storage object already missing "
                 "for document id=%s "
                 "(stored_filename=%s).",
                 document_id,
@@ -309,7 +306,7 @@ def delete_document(document_id):
 
         current_app.logger.exception(
             "Document id=%s was deleted from the "
-            "database, but the physical file "
+            "database, but the supabase storage object "
             "could not be deleted.",
             document_id,
         )
