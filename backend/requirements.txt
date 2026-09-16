@@ -19,11 +19,9 @@ greenlet==3.5.5
 gunicorn==26.2.0
 h11==0.16.0
 h2==4.4.1
-hf-xet==1.6.0
 hpack==4.2.0
 httpcore==1.0.9
 httpx==0.28.1
-huggingface_hub==1.29.0
 hyperframe==6.1.0
 idna==3.19
 itsdangerous==2.2.0
@@ -57,10 +55,8 @@ realtime==2.31.0
 regex==2026.9.3
 requests==2.34.2
 rich==15.0.0
-safetensors==0.8.0
 scikit-learn==1.9.0
 scipy==1.18.1
-sentence-transformers==6.0.1
 setuptools==84.0.0
 shellingham==1.5.4
 SQLAlchemy==2.0.52
@@ -71,10 +67,6 @@ supabase-auth==2.31.0
 supabase-functions==2.31.0
 sympy==1.14.0
 threadpoolctl==3.6.0
-tokenizers==0.23.1
-torch==2.14.0
-tqdm==4.70.0
-transformers==5.16.1
 typer==0.27.2
 typing-inspection==0.4.4
 typing_extensions==4.16.0
