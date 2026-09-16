@@ -3,7 +3,7 @@ import requests
 
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 
-EMBEDDING_API_URL = "https://ai.api.nvidia.com/v1/retrieval/nvidia/embeddings"
+EMBEDDING_API_URL = "https://integrate.api.nvidia.com/v1/embeddings"
 EMBEDDING_MODEL = "nvidia/llama-3.2-nv-embedqa-1b-v2"
 
 
@@ -15,13 +15,14 @@ def generate_embedding(text, input_type="passage"):
         EMBEDDING_API_URL,
         headers={
             "Authorization": f"Bearer {NVIDIA_API_KEY}",
-            "Accept": "application/json",
             "Content-Type": "application/json",
+            "Accept": "application/json",
         },
         json={
             "input": [text],
             "model": EMBEDDING_MODEL,
             "input_type": input_type,
+            "encoding_format": "float",
         },
         timeout=120,
     )
@@ -34,6 +35,8 @@ def generate_embedding(text, input_type="passage"):
 
     data = response.json()
 
-    print("Embedding dimension:", len(data["data"][0]["embedding"]))
-    
-    return data["data"][0]["embedding"]
+    embedding = data["data"][0]["embedding"]
+
+    print("Embedding dimension:", len(embedding))
+
+    return embedding

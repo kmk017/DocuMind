@@ -102,7 +102,7 @@ def process_and_store_document(document):
         ).delete()
     
         for index, content in enumerate(chunks):
-            embedding = generate_embedding(content)
+            embedding = generate_embedding(content, input_type="passage")
         
             chunk = DocumentChunk(
                 document_id=document.id,

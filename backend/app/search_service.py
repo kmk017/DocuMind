@@ -18,7 +18,7 @@ def search_similar_chunks(
     if not user_id:
         return []
 
-    query_embedding = generate_embedding(query)
+    query_embedding = generate_embedding(query, input_type="query")
 
     base_query = (
         DocumentChunk.query
