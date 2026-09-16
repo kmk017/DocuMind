@@ -44,6 +44,9 @@
    ========================================= */
 
 .navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   flex-shrink: 0;
 
   color: var(--color-text);
@@ -53,6 +56,20 @@
   letter-spacing: -0.025em;
 
   user-select: none;
+}
+
+.navbar__brand-mark {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.22);
 }
 
 /* =========================================
@@ -186,7 +203,7 @@
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 8px;
 
-  background: transparent;
+  background: var(--color-surface);
 
   color: var(--color-text-secondary);
 

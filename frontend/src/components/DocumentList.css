@@ -36,11 +36,37 @@
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-lg);
 
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.86);
 
   text-align: center;
 
   box-shadow: var(--shadow-sm);
+}
+
+.document-list__state-icon {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.document-list__state-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.document-list__state-icon--error {
+  background: var(--color-error-light);
+  border-color: rgba(196, 90, 90, 0.25);
+  color: var(--color-error);
 }
 
 .document-list__state-title {

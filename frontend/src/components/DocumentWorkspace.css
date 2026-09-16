@@ -12,7 +12,7 @@
   width: 100%;
   min-height: calc(100vh - 60px);
 
-  padding-bottom: 96px;
+  padding-bottom: 104px;
 }
 
 /* =========================================
@@ -22,7 +22,7 @@
 .workspace-header,
 .workspace-content {
   width: 100%;
-  max-width: 860px;
+  max-width: 900px;
 
   margin: 0 auto;
   padding-left: 32px;
@@ -30,7 +30,7 @@
 }
 
 .workspace-header {
-  padding-top: 40px;
+  padding-top: 48px;
   margin-bottom: 32px;
 }
 
@@ -157,7 +157,7 @@
 
 .question-form {
   margin-bottom: 32px;
-  padding: 20px;
+  padding: 22px;
 
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -179,7 +179,7 @@
   display: block;
   margin-bottom: 12px;
 
-  color: var(--color-text-secondary);
+  color: var(--color-text);
 
   font-size: 13px;
   font-weight: 600;
@@ -206,7 +206,8 @@
   font-size: 15px;
   line-height: 1.55;
 
-  padding: 6px 2px;
+  min-height: 74px;
+  padding: 7px 2px;
 }
 
 .question-input-row textarea::placeholder {
@@ -379,6 +380,13 @@
   gap: 16px;
 }
 
+.conversation-intro {
+  margin: -7px 0 2px;
+  color: var(--color-text-muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
 .conversation-header {
   display: flex;
   align-items: center;
@@ -426,7 +434,7 @@
    ========================================= */
 
 .conversation-item {
-  padding: 20px 22px;
+  padding: 22px 24px;
 
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -526,8 +534,14 @@
   border-top: 1px solid var(--color-border);
 }
 
+.assistant-answer .message-label::before {
+  content: "✦";
+  display: inline-block;
+  margin-right: 5px;
+}
+
 .answer-card {
-  padding: 18px 20px;
+  padding: 20px 22px;
 
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
@@ -537,7 +551,7 @@
   color: var(--color-text);
 
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .answer-card p {
@@ -583,7 +597,7 @@
 .source-card {
   padding: 14px 16px;
 
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
 
@@ -666,7 +680,7 @@
   padding: 64px 24px;
   text-align: center;
 
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.86);
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-lg);
 
@@ -773,6 +787,10 @@
   .workspace-header {
     padding-top: 28px;
     margin-bottom: 26px;
+  }
+
+  .conversation-item {
+    padding: 19px;
   }
 
   .workspace-document-label {

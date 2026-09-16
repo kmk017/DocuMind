@@ -45,6 +45,7 @@ export default function Navbar({ inWorkspace = false, onNavigateBack }) {
       <div className="navbar__inner">
 
         <span className="navbar__brand">
+          <span className="navbar__brand-mark" aria-hidden="true">D</span>
           DocuMind
         </span>
 

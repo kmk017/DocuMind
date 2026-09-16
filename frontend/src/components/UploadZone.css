@@ -2,6 +2,35 @@
   width: 100%;
 }
 
+.upload-zone-wrap__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.upload-zone-wrap__eyebrow {
+  margin: 0 0 5px;
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.upload-zone-wrap__header h2 {
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.upload-zone-wrap__header > p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 12.5px;
+}
+
 /* =========================================
    MAIN DROP ZONE
    ========================================= */
@@ -10,7 +39,7 @@
   position: relative;
 
   width: 100%;
-  min-height: 240px;
+  min-height: 250px;
   padding: 48px 24px;
 
   display: flex;
@@ -25,7 +54,7 @@
   border: 1.5px dashed var(--color-border);
   border-radius: var(--radius-lg);
 
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.9);
 
   cursor: pointer;
 
@@ -265,6 +294,16 @@
    ========================================= */
 
 @media (max-width: 560px) {
+  .upload-zone-wrap__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .upload-zone-wrap__header h2 {
+    font-size: 20px;
+  }
+
   .upload-zone {
     min-height: 220px;
     padding: 40px 20px;

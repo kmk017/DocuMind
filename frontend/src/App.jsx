@@ -167,14 +167,17 @@ function App() {
         <section className="hero">
           <div className="hero__text">
 
+            <p className="hero__eyebrow">
+              Document intelligence workspace
+            </p>
+
             <h1 className="hero__heading">
-              Understand every document.
+              Turn documents into clear answers.
             </h1>
 
             <p className="hero__subtitle">
-              Upload your files and ask questions.
-              DocuMind finds the relevant information
-              and answers using your documents.
+              Upload your files, surface relevant context, and ask
+              grounded questions—all in one focused workspace.
             </p>
 
             <a
@@ -183,6 +186,21 @@ function App() {
             >
               Upload documents
             </a>
+
+            <dl className="hero__highlights" aria-label="DocuMind capabilities">
+              <div>
+                <dt>01</dt>
+                <dd>Upload PDF &amp; DOCX</dd>
+              </div>
+              <div>
+                <dt>02</dt>
+                <dd>Ask grounded questions</dd>
+              </div>
+              <div>
+                <dt>03</dt>
+                <dd>Review source context</dd>
+              </div>
+            </dl>
 
           </div>
         </section>
@@ -201,10 +219,12 @@ function App() {
           className="documents-section"
         >
           <div className="documents-section__header">
-
-            <h2 className="documents-section__heading">
-              Your documents
-            </h2>
+            <div>
+              <p className="section-eyebrow">Knowledge library</p>
+              <h2 className="documents-section__heading">
+                Your documents
+              </h2>
+            </div>
 
             {!isLoading &&
               !error &&

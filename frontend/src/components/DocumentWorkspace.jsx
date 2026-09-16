@@ -121,7 +121,7 @@ function DocumentWorkspace({ document, onBack }) {
           onSubmit={handleAsk}
         >
           <label htmlFor="document-question">
-            Ask a question
+            Ask DocuMind about this document
           </label>
 
           <div className="question-input-row">
@@ -131,7 +131,7 @@ function DocumentWorkspace({ document, onBack }) {
               onChange={(event) =>
                 setQuestion(event.target.value)
               }
-              placeholder="e.g. What projects are mentioned in this document?"
+              placeholder="For example: What are the key decisions in this document?"
               rows={3}
               disabled={loading}
             />
@@ -204,6 +204,10 @@ function DocumentWorkspace({ document, onBack }) {
                 Clear conversation
               </button>
             </div>
+
+            <p className="conversation-intro">
+              Each answer is grounded in the selected document and includes its retrieved context.
+            </p>
 
             {messages.map((message) => (
               <div

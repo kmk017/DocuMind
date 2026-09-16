@@ -93,6 +93,13 @@ export default function UploadZone({ onUploaded }) {
 
   return (
     <div className="upload-zone-wrap">
+      <div className="upload-zone-wrap__header">
+        <div>
+          <p className="upload-zone-wrap__eyebrow">Add to your library</p>
+          <h2>Upload a document</h2>
+        </div>
+        <p>PDF and DOCX files are supported</p>
+      </div>
       <label
         htmlFor={inputId}
         className={`upload-zone upload-zone--${status} ${

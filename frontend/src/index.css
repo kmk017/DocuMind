@@ -2,17 +2,17 @@
 
 :root {
   /* Color */
-  --color-bg: #f7f8fa;
+  --color-bg: #f8f9fc;
   --color-surface: #ffffff;
   --color-surface-elevated: #f2f3f6;
-  --color-text: #17191c;
-  --color-text-secondary: #6b7078;
-  --color-text-muted: #969ba3;
-  --color-border: #e7e9ed;
+  --color-text: #182033;
+  --color-text-secondary: #5f6878;
+  --color-text-muted: #8992a2;
+  --color-border: #e3e7ee;
   --color-accent: #4f46e5;
   --color-accent-hover: #4338ca;
-  --color-accent-light: #eef0fe;
-  --color-accent-ring: rgba(79, 70, 229, 0.16);
+  --color-accent-light: #f0f0ff;
+  --color-accent-ring: rgba(79, 70, 229, 0.18);
   --color-success: #3d7a63;
   --color-error: #c45a5a;
   --color-error-light: #f6e9e9;
@@ -23,12 +23,12 @@
   --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Layout */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --max-width: 1320px;
-  --shadow-sm: 0 1px 2px rgba(23, 25, 28, 0.04);
-  --shadow-md: 0 8px 24px rgba(23, 25, 28, 0.08);
+  --radius-sm: 9px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --max-width: 1200px;
+  --shadow-sm: 0 1px 2px rgba(24, 32, 51, 0.04), 0 3px 10px rgba(24, 32, 51, 0.03);
+  --shadow-md: 0 12px 32px rgba(24, 32, 51, 0.10);
 
   /* Motion */
   --ease-ui: 200ms cubic-bezier(0.2, 0.6, 0.3, 1);
@@ -42,6 +42,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+::selection {
+  background: var(--color-accent-light);
+  color: var(--color-text);
 }
 
 body {
