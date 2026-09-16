@@ -16,7 +16,7 @@ class DocumentChunk(db.Model):
 
     content = db.Column(db.Text, nullable=False)
 
-    embedding = db.Column(Vector(384), nullable=True)
+    embedding = db.Column(Vector(2048), nullable=True)
 
     def __repr__(self):
         return (
